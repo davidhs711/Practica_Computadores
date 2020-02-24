@@ -48,8 +48,14 @@ public class Person {
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
 		// Dos personas son iguales si son iguales sus nifs
+    	if(this==obj) {
+    		return true;
+    	}
+    	if(obj instanceof Person) {
+    		Person other= (Person) obj;
+    		return (this.nif.contentEquals(other.nif));
+    	}
 		
-    	
 		return false;
 	}
 	

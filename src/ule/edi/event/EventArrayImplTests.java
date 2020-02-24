@@ -10,7 +10,7 @@ import org.junit.*;
 import ule.edi.model.*;
 
 public class EventArrayImplTests {
-
+	
 	private DateFormat dformat = null;
 	private EventArrayImpl e;
 	
@@ -58,4 +58,20 @@ public class EventArrayImplTests {
 	}
 	
 	// TODO EL RESTO DE MÉTODOS DE TESTS NECESARIOS PARA LA COMPLETA COMPROBACIÓN DEL BUEN FUNCIONAMIENTO DE TODO EL CÓDIGO IMPLEMENTADO
+	
+	@Test
+	public void testSellSeat() throws Exception {
+		
+	    Assert.assertTrue(e.getNumberOfAvailableSeats()==110);
+	    Assert.assertEquals(e.getNumberOfAvailableSeats(), 110);
+	    Assert.assertEquals(e.getNumberOfAttendingAdults(), 0);
+	}
+
+
+
+
+
+
+
+
 }
