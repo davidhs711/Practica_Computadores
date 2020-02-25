@@ -34,10 +34,8 @@ public class EventArrayImpl implements Event {
 	 this.eventDate= date;
 	 this.nSeats= nSeats;
 	 this.seats= new Seat[nSeats];
-	
 	   
    }
-   
    
    public EventArrayImpl(String name, Date date, int nSeats, Double price, Byte discount){
 	   //TODO 
@@ -83,8 +81,14 @@ public Byte getDiscountAdvanceSale() {
 @Override
 public int getNumberOfSoldSeats() {
 	// TODO Auto-generated method stub
+	int soldSeats= 0;
 	
-	return 0;
+	for(int i= 0; i<this.seats.length; i++) {
+		if(this.seats[i]!= null) {
+			soldSeats= soldSeats + 1;
+		}
+	}
+	return soldSeats;
 }
 
 
@@ -105,11 +109,21 @@ public int getNumberOfNormalSaleSeats() {
 	return normalSales;
 }
 
-
 @Override
 public int getNumberOfAdvanceSaleSeats() {
 	// TODO Auto-generated method stub
-	return 0;
+	int advanceSales= 0;
+	
+	for(int i= 0; i<this.seats.length; i++) {
+		if(this.seats[i]!= null) {
+			
+			if(this.seats[i].getType()== Type.ADVANCE_SALE) {
+			
+				advanceSales= advanceSales + 1;
+			}	
+		}
+	}
+	return advanceSales;
 }
 
 
@@ -137,6 +151,11 @@ public int getNumberOfAvailableSeats() {
 @Override
 public Seat getSeat(int pos) {
 	// TODO Auto-generated method stub
+	if((pos>=1) && (pos<=seats.length)) {
+		if(this.seats[pos-1]!=null) {
+			return seats[pos-1];
+		}
+	}
 	return null;
 }
 
@@ -154,15 +173,17 @@ public boolean sellSeat(int pos, Person p, boolean advanceSale) {
 	boolean seatSold= false;
 	Type saleType= Type.NORMAL;
 	
-	if(this.seats[pos-1]== null) {
+	if((pos>=1) && (pos<=seats.length)) {
+		
+		if(this.seats[pos-1]== null) {
 		
 		if(advanceSale== true) {
 			saleType= Type.ADVANCE_SALE;
 		}
-		
-		if((pos>=1) && (pos<=seats.length)) {
+
 		this.seats[pos-1]= new Seat(this, pos, saleType, p); 
 		seatSold= true;
+			
 		}
 	} 
 	
