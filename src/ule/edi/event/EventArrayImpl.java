@@ -163,6 +163,15 @@ public Seat getSeat(int pos) {
 @Override
 public Person refundSeat(int pos) {
 	// TODO Auto-generated method stub
+	if((pos>=1) && (pos<=seats.length)){
+		
+		if(this.seats[pos-1]!= null) {
+			Seat seat= this.seats[pos-1];
+			this.seats[pos-1]= null;
+			return seat.getHolder();
+		}
+	}
+	
 	return null;
 }
 

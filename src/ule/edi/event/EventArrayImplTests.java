@@ -42,7 +42,7 @@ public class EventArrayImplTests {
 	public void testSellSeat1Adult() throws Exception{
 		
 	    Assert.assertEquals(e.getNumberOfAttendingAdults(), 0);
-		Assert.assertTrue(e.sellSeat(1, new Person("10203040A","Alice", 34),false));	//venta normal
+		Assert.assertTrue(e.sellSeat(1, new Person("Alice","10203040A", 34),false));	//venta normal
 	    Assert.assertEquals(e.getNumberOfAttendingAdults(), 1);  
 	    Assert.assertEquals(e.getNumberOfNormalSaleSeats(), 1);
 	  
@@ -51,7 +51,7 @@ public class EventArrayImplTests {
 	@Test
 	public void testgetCollection() throws Exception{
 		Event  ep = new EventArrayImpl("The Fabulous Five", parseLocalDate("24/02/2018 17:00:00"), 4);
-		Assert.assertEquals(ep.sellSeat(1, new Person("1010", "AA", 10), true),true);
+		Assert.assertEquals(ep.sellSeat(1, new Person("Paul", "10293040A", 10), true),true);
 		Assert.assertTrue(ep.getCollectionEvent()==75);					
 	}
 	
@@ -61,17 +61,17 @@ public class EventArrayImplTests {
 	
 	@Test
 	public void testSellSeatHigherPos() throws Exception {
-		Assert.assertFalse(e.sellSeat(2000, new Person("10203040A","Peter", 34),false));
+		Assert.assertFalse(e.sellSeat(2000, new Person("Peter","10203040A", 34),false));
 	}
 	
 	@Test
 	public void testSellSeatLowerPos() throws Exception {
-		Assert.assertFalse(e.sellSeat(-3, new Person("10203040A","Peter", 34),false));
+		Assert.assertFalse(e.sellSeat(-3, new Person("Peter","10203040A", 34),false));
 	}
 
 	@Test
 	public void testSellSeat() throws Exception {
-		Assert.assertTrue(e.sellSeat(10, new Person("10203036A","Peter", 34),false));
+		Assert.assertTrue(e.sellSeat(10, new Person("Peter","10203040A", 34),false));
 	}
 
 	// METODO GET NAME
@@ -106,7 +106,7 @@ public class EventArrayImplTests {
 
 	@Test
 	public void testGetNumberOfSoldSeats() throws Exception{
-		e.sellSeat(2, new Person("10302040A","Marcos", 21), false);
+		e.sellSeat(2, new Person("Marcos","10203040A", 21), false);
 		Assert.assertEquals( e.getNumberOfSoldSeats(), 1);
 	}
 	
@@ -114,7 +114,7 @@ public class EventArrayImplTests {
 
 	@Test
 	public void testgetNumberOfNormalSaleSeatsNormal() throws Exception{
-		e.sellSeat(3, new Person("11442040E","Alfred", 32), false);
+		e.sellSeat(3, new Person("Alfred","10203040A", 32), false);
 		Assert.assertEquals( e.getNumberOfNormalSaleSeats(), 1);
 	}
 	
@@ -122,7 +122,7 @@ public class EventArrayImplTests {
 
 	@Test
 	public void testgetNumberOfNormalSaleSeatsAdvance() throws Exception{
-		e.sellSeat(3, new Person("11442040E","Alfred", 32), true);
+		e.sellSeat(3, new Person("Marcos","10203040A", 32), true);
 		Assert.assertEquals( e.getNumberOfNormalSaleSeats(), 0);
 	}
 
@@ -130,7 +130,7 @@ public class EventArrayImplTests {
 
 	@Test
 	public void getNumberOfAdvanceSaleSeatsAdvance() throws Exception{
-		e.sellSeat(3, new Person("23442040Z","Jon", 32), true);
+		e.sellSeat(3, new Person("Jon","10203040A", 32), true);
 		Assert.assertEquals( e.getNumberOfAdvanceSaleSeats(), 1);
 	}
 	
@@ -138,7 +138,7 @@ public class EventArrayImplTests {
 
 	@Test
 	public void getNumberOfAdvanceSaleSeatsNormal() throws Exception{
-		e.sellSeat(3, new Person("23442040Z","Jon", 32), false);
+		e.sellSeat(3, new Person("Marcos","10203040A", 32), false);
 		Assert.assertEquals( e.getNumberOfAdvanceSaleSeats(), 0);
 	}
 	
@@ -160,13 +160,13 @@ public class EventArrayImplTests {
 
 	@Test
 	public void getNumberOfAvailableSeatsOneNotAvailable() throws Exception{
-		e.sellSeat(90, new Person("23442040Z","Jon", 32), false);
+		e.sellSeat(90, new Person("Jon","10203040A", 32), false);
 		Assert.assertEquals( e.getNumberOfAvailableSeats(), 109);
 	}
 	
 	// METODO GET SEAT CON SITIO OCUPADO
 	
-	@Test
+	/*@Test
 	public void getSeatOcupado() throws Exception{
 		int pos= 10;
 		
@@ -177,8 +177,55 @@ public class EventArrayImplTests {
 		e.sellSeat(pos, person, false);
 		
 		Assert.assertEquals( e.getSeat(pos), seat);
+	}*/
+	
+	// METODO REFOUND SEAT SUSTITUIR PERSONA
+
+	@Test
+	public void refoundSeat() throws Exception{
+		Person person= new Person("Robert","10203040A",32);
+		e.sellSeat(12, person, false);
+		Assert.assertTrue( e.refundSeat(12).equals(person));
+		Assert.assertNull(e.refundSeat(12));
 	}
 	
+	// METODO REFOUND SEAT, SEAT NULL
+
+	@Test
+	public void refoundSeatSeatNull() throws Exception{
+		Assert.assertNull(e.refundSeat(12));
+	}
+	
+	// METODO REFOUND SEAT, INVALID POINTER
+
+	@Test
+	public void refoundSeatSeatInvalidPointer0() throws Exception{
+		Assert.assertNull(e.refundSeat(0));
+	}
+	
+	// METODO REFOUND SEAT, INVALID POINTER
+	
+	@Test
+	public void refoundSeatSeatInvalidPointer() throws Exception{
+		Assert.assertNull(e.refundSeat(1000));
+	}
+	
+	// METODO SELL SEAT TRUE
+	
+	@Test
+	public void sellSeatTrue() throws Exception{
+		Person person= new Person("Robert","10203040A",32);
+		Assert.assertTrue(e.sellSeat(12, person, false));
+	}
+	
+	// METODO SELL SEAT FALSE
+	
+	@Test
+	public void sellSeatFalse() throws Exception{
+		Person person= new Person("Robert","10203040A",32);
+		e.sellSeat(12, person, false);
+		Assert.assertFalse(e.sellSeat(12, person, false));
+	}
 	
 	
 }
