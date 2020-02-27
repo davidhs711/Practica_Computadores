@@ -379,5 +379,37 @@ public class EventArrayImplTests {
 		Assert.assertFalse( e2.isAdvanceSale(person));
 	}
 	
+	// METODO GET COLLECTION EVENT
+	
+	@Test
+	public void getCollectionEvent() throws Exception{
+		Person person= new Person("23442040Z","Jon", 32);
+		
+		e.sellSeat(10, person, true);
+		
+		Assert.assertEquals( e.getCollectionEvent(), 75.0, 0.001);
+	}
+	
+	// METODO GET POS PERSON, 1 PERSON POSITION 10
+	
+	@Test
+	public void getPosPerson() throws Exception{
+		Person person= new Person("23442040Z","Jon", 32);
+		
+		e.sellSeat(10, person, true);
+		
+		Assert.assertEquals( e.getPosPerson(person), 10);
+	}
+	
+	// METODO GET POS PERSON, A PERSON WITHOUT SEATS
+
+	@Test
+	public void getPosPersonWithoutSeats() throws Exception{
+		Person person= new Person("23442040Z","Jon", 32); // Person without seats
+		Person personTwo= new Person("13278310I","Julio", 22); // Person with all seats bought
+		e2.sellSeat(1, personTwo, false);
+		e2.sellSeat(2, personTwo, false);
+		Assert.assertEquals( e2.getPosPerson(person), -1); //it resturns -1 when the person is not in the event
+	}
 	
 }

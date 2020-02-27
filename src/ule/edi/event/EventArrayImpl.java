@@ -301,11 +301,9 @@ public Double getCollectionEvent() {
 	// TODO Auto-generated method stub
 	Double collectionEvent= 0.0;
 	
-	if(this.nSeats!=0) {
-		for(int i= 0; i<this.seats.length; i++) {
-			if(seats[i]!= null) {
-				collectionEvent= collectionEvent + this.getPrice(seats[i]);
-			}
+	for(int i= 0; i<this.seats.length; i++) {
+		if(seats[i]!= null) {
+			collectionEvent= collectionEvent + this.getPrice(seats[i]);
 		}
 	}
 	return collectionEvent;
@@ -315,8 +313,15 @@ public Double getCollectionEvent() {
 @Override
 public int getPosPerson(Person p) {
 	// TODO Auto-generated method stub
-	
-	return 0;
+	int pos= -1;
+	for(int i= 0; i<this.seats.length; i++) {
+		if(this.seats[i]!= null) {
+			if((this.seats[i].getHolder().equals(p))) {
+				pos= i+1;
+			}
+		}
+	}
+	return pos;
 }
 
 
