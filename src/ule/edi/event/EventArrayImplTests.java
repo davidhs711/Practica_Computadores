@@ -28,7 +28,8 @@ public class EventArrayImplTests {
 	@Before
 	public void testBefore() throws Exception{
 	    e = new EventArrayImpl("The Fabulous Five", parseLocalDate("24/02/2018 17:00:00"), 110);
-	    //e2= new EventArrayImpl("The Three", parseLocalDate("12/03/2019 18:00:00"), 50, 100.0, 25);
+	    Byte i= 25;
+	    e2= new EventArrayImpl("The Three", parseLocalDate("12/03/2019 18:00:00"), 2, 100.0, i);
 	}
 	
 	@Test
@@ -293,9 +294,90 @@ public class EventArrayImplTests {
 		Assert.assertEquals(e.getNumberOfAttendingElderlyPeople(), 1);
 	}
 	
+	// METODO GET PRICE, NORMAL PRICE 
 	
+	@Test
+	public void getPriceNormal() throws Exception{
+		int pos= 10;
+		
+		Person person= new Person("23442040Z","Jon", 32);
+		
+		Seat seat= new Seat(e, pos, Type.NORMAL, person);
+		
+		e.sellSeat(pos, person, false);
+		
+		Assert.assertEquals( e.getPrice(seat), 100.0, 0.001);
+	}
+
+	// METODO GET PRICE, ADVANCE PRICE
 	
+	@Test
+	public void getPriceDiscount() throws Exception{
+		int pos= 10;
+		
+		Person person= new Person("23442040Z","Jon", 32);
+		
+		Seat seat= new Seat(e, pos, Type.ADVANCE_SALE, person);
+		
+		e.sellSeat(pos, person, true);
+		
+		Assert.assertEquals( e.getPrice(seat), 75.0, 0.001);
+	}
 	
+	// METODO GET PRICE, SEAT NULL
+	
+	@Test
+	public void getPriceSeatNull() throws Exception{
+		Seat seat= null;
+		
+		Assert.assertEquals( e.getPrice(seat), 0.0, 0.001);
+	}
+	
+	// METODO GET PRICE, ADVANCE PRICE
+	
+	@Test
+	public void getPriceSeatDiferentFromThis() throws Exception{
+		int pos= 10;
+		
+		Person person= new Person("23442040Z","Jon", 32);
+		
+		Seat seat= new Seat(e2, pos, Type.ADVANCE_SALE, person);
+		
+		Assert.assertEquals( e.getPrice(seat), 0.0, 0.001);
+	}
+	
+	// METODO IS ADVANCE SALE, ADVANCE SALE PERSON
+	
+	@Test
+	public void isAdvanceSaleAdvanceSale() throws Exception{
+		Person person= new Person("23442040Z","Jon", 32);
+		
+		e.sellSeat(10, person, true);
+		
+		Assert.assertTrue( e.isAdvanceSale(person));
+	}
+	
+	// METODO IS ADVANCE SALE, NORMAL SALE PERSON
+
+	@Test
+	public void isAdvanceSaleNormalSale() throws Exception{
+		Person person= new Person("23442040Z","Jon", 32);
+		
+		e.sellSeat(10, person, false);
+		
+		Assert.assertFalse( e.isAdvanceSale(person));
+	}
+	
+	// METODO IS ADVANCE SALE, A PERSON WITHOUT SEATS
+
+	@Test
+	public void isAdvanceSalePersonWithoutSeats() throws Exception{
+		Person person= new Person("23442040Z","Jon", 32); // Person without seats
+		Person personTwo= new Person("13278310I","Julio", 22); // Person with all seats bought
+		e2.sellSeat(1, personTwo, false);
+		e2.sellSeat(2, personTwo, false);
+		Assert.assertFalse( e2.isAdvanceSale(person));
+	}
 	
 	
 }

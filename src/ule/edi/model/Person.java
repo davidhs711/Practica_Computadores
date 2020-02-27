@@ -16,7 +16,7 @@ public class Person {
 	}
 
 	public String getNif() {
-		return nif;
+		return this.nif;
 	}
 
 	public void setNif(String nif) {

@@ -280,17 +280,19 @@ public int getMaxNumberConsecutiveSeats() {
 public Double getPrice(Seat seat) {
 	// TODO Auto-generated method stub
 	Double seatPrice= 0.0;
-	if(seat.getEvent()==this) {
-		if(seat.getType()== Type.NORMAL) {
-			seatPrice= this.price;
-			
-		} else if(seat.getType()== Type.ADVANCE_SALE) {
-			seatPrice= this.price - discountAdvanceSale;
-			
+	if(seat!= null) {
+		if((seat.getEvent()==this)) {
+			if(seat.getType()== Type.NORMAL) {
+				seatPrice= this.price;
+				
+			} else{
+				seatPrice= this.price - discountAdvanceSale;
+				
+			}
+			return seatPrice;
 		}
 	}
-	
-	return seatPrice;
+	return 0.0;
 }
 
 
@@ -321,9 +323,21 @@ public int getPosPerson(Person p) {
 @Override
 public boolean isAdvanceSale(Person p) {
 	// TODO Auto-generated method stub
-	return false;
+	boolean isAdvanceSale= false;
+	
+	for(int i= 0; i<this.seats.length; i++) {
+		if(this.seats[i]!= null) {
+			if((this.seats[i].getHolder().equals(p))){
+				
+				if((this.seats[i].getType())== Type.ADVANCE_SALE) {
+					isAdvanceSale= true;
+				}
+			}
+		}
+	}
+	return isAdvanceSale;
 }
-   
+  
 
 
 }	
