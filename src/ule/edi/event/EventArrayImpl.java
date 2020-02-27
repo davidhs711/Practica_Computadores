@@ -203,7 +203,18 @@ public boolean sellSeat(int pos, Person p, boolean advanceSale) {
 @Override
 public int getNumberOfAttendingChildren() {
 	// TODO Auto-generated method stub
-	return 0;
+	int numberOfChilds= 0;
+	
+	for(int i= 0; i<this.seats.length; i++) {
+		if(this.seats[i]!= null) {
+			
+			if(((this.seats[i].getHolder().getAge())<Configuration.CHILDREN_EXMAX_AGE)) {
+			
+				numberOfChilds= numberOfChilds + 1;
+			}	
+		}
+	}
+	return numberOfChilds;
 }
 
 
@@ -228,7 +239,18 @@ public int getNumberOfAttendingAdults() {
 @Override
 public int getNumberOfAttendingElderlyPeople() {
 	// TODO Auto-generated method stub
-	return 0;
+	int numberOfElderly= 0;
+	
+	for(int i= 0; i<this.seats.length; i++) {
+		if(this.seats[i]!= null) {
+			
+			if((this.seats[i].getHolder().getAge())>Configuration.ELDERLY_PERSON_INMIN_AGE) {
+			
+				numberOfElderly= numberOfElderly + 1;
+			}	
+		}
+	}
+	return numberOfElderly;
 }
 
 

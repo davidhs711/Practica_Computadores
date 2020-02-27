@@ -14,6 +14,7 @@ public class EventArrayImplTests {
 	
 	private DateFormat dformat = null;
 	private EventArrayImpl e;
+	private EventArrayImpl e2;
 	
 	private Date parseLocalDate(String spec) throws ParseException {
         return dformat.parse(spec);
@@ -27,7 +28,7 @@ public class EventArrayImplTests {
 	@Before
 	public void testBefore() throws Exception{
 	    e = new EventArrayImpl("The Fabulous Five", parseLocalDate("24/02/2018 17:00:00"), 110);
-
+	    //e2= new EventArrayImpl("The Three", parseLocalDate("12/03/2019 18:00:00"), 50, 100.0, 25);
 	}
 	
 	@Test
@@ -56,6 +57,7 @@ public class EventArrayImplTests {
 	}
 	
 	// TODO EL RESTO DE MÉTODOS DE TESTS NECESARIOS PARA LA COMPLETA COMPROBACIÓN DEL BUEN FUNCIONAMIENTO DE TODO EL CÓDIGO IMPLEMENTADO
+	
 	
 	// METODO SELL SEAT
 	
@@ -166,7 +168,7 @@ public class EventArrayImplTests {
 	
 	// METODO GET SEAT CON SITIO OCUPADO
 	
-	/*@Test
+	@Test
 	public void getSeatOcupado() throws Exception{
 		int pos= 10;
 		
@@ -176,8 +178,23 @@ public class EventArrayImplTests {
 		
 		e.sellSeat(pos, person, false);
 		
-		Assert.assertEquals( e.getSeat(pos), seat);
-	}*/
+		Assert.assertEquals( e.getSeat(pos).getHolder(), seat.getHolder());
+	}
+	
+	// METODO GET SEAT EMPTY POSITION
+	
+	@Test
+	public void getSeatEmptyPosition() throws Exception{
+		Assert.assertNull( e.getSeat(10));
+	}
+	
+	// METODO GET SEAT INVALID POSITION
+	
+	@Test
+	public void getSeatInvalidPosition() throws Exception{
+		Assert.assertNull( e.getSeat(1000));
+		Assert.assertNull( e.getSeat(-3));
+	}
 	
 	// METODO REFOUND SEAT SUSTITUIR PERSONA
 
@@ -226,6 +243,59 @@ public class EventArrayImplTests {
 		e.sellSeat(12, person, false);
 		Assert.assertFalse(e.sellSeat(12, person, false));
 	}
+	
+	// METODO SELL GET NUMBER OF CHILDREN, 1 CHILD
+	
+	@Test
+	public void getNumberOfAttendingChildrenOneChild() throws Exception{
+		Person person= new Person("Nico","90233040A",9);	// 1 child
+		e.sellSeat(12, person, false);
+		Assert.assertEquals(e.getNumberOfAttendingChildren(), 1);
+	}
+	
+	// METODO SELL GET NUMBER OF CHILDREN, NO CHILDREN
+	
+	@Test
+	public void getNumberOfAttendingChildrenNoChildren() throws Exception{
+		Person person= new Person("Nico","90233040A",40);	// >14 years
+		e.sellSeat(12, person, false);
+		Assert.assertEquals(e.getNumberOfAttendingChildren(), 0);
+	}
+	
+	// METODO SELL GET NUMBER OF ADULTS, 1 ADULT, 1 ELDERLY
+	
+	@Test
+	public void getNumberOfAttendingAdultsOneAdultOneElderly() throws Exception{
+		Person person= new Person("Jon","90233040A",34);	// 1 adult
+		Person personTwo= new Person("Tom","56287020A",72);	// 1 elderly
+		e.sellSeat(12, person, false);
+		e.sellSeat(13, personTwo, false);
+		Assert.assertEquals(e.getNumberOfAttendingAdults(), 1);
+	}
+	
+	// METODO SELL GET NUMBER OF ADULTS, NO ADULTS
+	
+	@Test
+	public void getNumberOfAttendingAdultsNoAdults() throws Exception{
+		Person person= new Person("Nico","90233040A",9);	// 1 child
+		e.sellSeat(12, person, false);
+		Assert.assertEquals(e.getNumberOfAttendingAdults(), 0);
+	}
+	
+	// METODO SELL GET NUMBER OF ELDERLY, 1 ELDERLY, 1 ADULT
+	
+	@Test
+	public void getNumberOfAttendingElderlyPeople() throws Exception{
+		Person person= new Person("Albert","97030040Z",78);	// 1 elderly
+		Person personTwo= new Person("Jon","12030384R",45);	// 1 adult
+		e.sellSeat(12, person, false);
+		e.sellSeat(13, personTwo, false);
+		Assert.assertEquals(e.getNumberOfAttendingElderlyPeople(), 1);
+	}
+	
+	
+	
+	
 	
 	
 }
