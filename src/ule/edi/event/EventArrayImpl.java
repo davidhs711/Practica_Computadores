@@ -257,22 +257,59 @@ public int getNumberOfAttendingElderlyPeople() {
 @Override
 public List<Integer> getAvailableSeatsList() {
 	// TODO Auto-generated method stub
+	List<Integer> availableSeats = new ArrayList<>(this.nSeats);
 	
-	return null;
+	for(int i= 0; i<this.seats.length; i++) {
+		if(this.seats[i]== null) {
+			availableSeats.add(i+1);	//Available Seat
+		}
+	}
+	return availableSeats;
 }
 
 
 @Override
 public List<Integer> getAdvanceSaleSeatsList() {
 	// TODO Auto-generated method stub
-	return null;
+	List<Integer> advanceSaleSeats = new ArrayList<>(this.nSeats);
+	
+	for(int i= 0; i<this.seats.length; i++) {
+		if(this.seats[i]!= null) {
+			
+			if(this.seats[i].getType()== Type.ADVANCE_SALE) {
+				advanceSaleSeats.add(i+1);	//Advance sale seat
+			}
+		}
+	}
+	return advanceSaleSeats;
 }
 
 
 @Override
 public int getMaxNumberConsecutiveSeats() {
 	// TODO Auto-generated method stub
-	return 0;
+	int consecutiveSeats= 0;
+	int finalConsecutiveSeats= 0;
+	
+	for(int i= 0; i<this.seats.length; i++) {
+			
+		consecutiveSeats= 0;
+		int j= i;
+		
+		while((this.seats[j]== null)) {
+			consecutiveSeats= consecutiveSeats + 1;
+			j++;
+			if(j==this.seats.length) {
+				break;
+			}
+		}
+		
+		if(consecutiveSeats>finalConsecutiveSeats) {
+			finalConsecutiveSeats= consecutiveSeats;
+		}
+	}
+	
+	return finalConsecutiveSeats;
 }
 
 

@@ -3,7 +3,9 @@ package ule.edi.event;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.*;
 
@@ -412,4 +414,53 @@ public class EventArrayImplTests {
 		Assert.assertEquals( e2.getPosPerson(person), -1); //it resturns -1 when the person is not in the event
 	}
 	
+	//METODO GET AVAILABLE SEATS LIST, ALL AVAILABLE
+	
+	@Test
+	public void getAvailableSeatsListAllAvailable() throws Exception{
+		List<Integer> availableSeats = new ArrayList<>(2);
+		availableSeats.add(1);
+		availableSeats.add(2);
+		Assert.assertEquals(availableSeats, e2.getAvailableSeatsList());
+	}
+	
+	//METODO GET AVAILABLE SEATS LIST, ONE NOT AVAILABLE
+	
+	@Test
+	public void getAvailableSeatsListOneNotAvailable() throws Exception{
+		List<Integer> availableSeats = new ArrayList<>(2);
+		availableSeats.add(1);
+		e2.sellSeat(2, new Person("13278310I","Julio", 22), false);
+		Assert.assertEquals(availableSeats, e2.getAvailableSeatsList());
+	}
+	
+	//METODO GET ADVANCE SALE SEATS LIST, 1 ADVANCE THE OTHER NOT
+	
+	@Test
+	public void getAdvanceSaleSeats() throws Exception{
+		List<Integer> advanceSaleSeats = new ArrayList<>(2);
+		e2.sellSeat(1, new Person("13278310I","Julio", 22), true);
+		e2.sellSeat(2, new Person("13278310I","Julio", 22), false);
+		advanceSaleSeats.add(1);
+		Assert.assertEquals(advanceSaleSeats, e2.getAdvanceSaleSeatsList());
+	}
+	
+	//METODO GET ADVANCE SALE SEATS LIST, 1 ADVANCE THE OTHER AVAILABLE
+	
+	@Test
+	public void getAdvanceSaleSeatsOneAvailable() throws Exception{
+		List<Integer> advanceSaleSeats = new ArrayList<>(2);
+		e2.sellSeat(1, new Person("13278310I","Julio", 22), true);
+		advanceSaleSeats.add(1);
+		Assert.assertEquals(advanceSaleSeats, e2.getAdvanceSaleSeatsList());
+	}
+	
+	//METODO GET MAX NUMBER CONSECUTIVE SEATS
+	
+	@Test
+	public void getMaxNumberConsecutiveSeats() throws Exception{
+		e.sellSeat(50, new Person("13278310I","Julio", 22), true);
+		
+		Assert.assertEquals(e.getMaxNumberConsecutiveSeats(),60);
+	}
 }
